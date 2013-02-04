@@ -1,6 +1,7 @@
 package com.apphance.ameba.ios.plugins.release
 
 import com.apphance.ameba.AmebaCommonBuildTaskGroups
+import com.apphance.ameba.PluginHelper
 import com.apphance.ameba.ProjectConfiguration
 import com.apphance.ameba.ProjectHelper
 import com.apphance.ameba.PropertyCategory
@@ -13,6 +14,7 @@ import com.apphance.ameba.plugins.release.AmebaArtifact
 import com.apphance.ameba.plugins.release.ProjectReleaseCategory
 import com.apphance.ameba.plugins.release.ProjectReleaseConfiguration
 import com.apphance.ameba.plugins.release.ProjectReleasePlugin
+import com.apphance.ameba.util.file.FileManager
 import groovy.text.SimpleTemplateEngine
 import org.gradle.api.AntBuilder
 import org.gradle.api.GradleException
@@ -21,7 +23,7 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
-import static com.apphance.ameba.util.FileDownloader.downloadFile
+import static com.apphance.ameba.util.file.FileDownloader.downloadFile
 
 /**
  * Plugin for releasing iOS build.
@@ -40,7 +42,7 @@ class IOSReleasePlugin implements Plugin<Project> {
 
     @Override
     def void apply(Project project) {
-        ProjectHelper.checkAllPluginsAreLoaded(project, this.class, IOSPlugin.class, ProjectReleasePlugin.class)
+        PluginHelper.checkAllPluginsAreLoaded(project, this.class, IOSPlugin.class, ProjectReleasePlugin.class)
         this.projectHelper = new ProjectHelper();
         this.conf = PropertyCategory.getProjectConfiguration(project)
         this.releaseConf = ProjectReleaseCategory.getProjectReleaseConfiguration(project)
@@ -140,7 +142,7 @@ class IOSReleasePlugin implements Plugin<Project> {
                     installable: iosReleaseConf.dmgImageFiles,
                     mainTarget: iosConf.mainTarget,
                     families: iosConf.families,
-                    fileSize: projectHelper.getHumanReadableSize(fileSize),
+                    fileSize: FileManager.getHumanReadableSize(fileSize),
                     releaseMailFlags: releaseConf.releaseMailFlags,
                     rb: rb
             ]

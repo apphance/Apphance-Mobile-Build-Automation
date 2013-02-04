@@ -1,6 +1,7 @@
 package com.apphance.ameba.android.plugins.test
 
 import com.apphance.ameba.AmebaCommonBuildTaskGroups
+import com.apphance.ameba.PluginHelper
 import com.apphance.ameba.ProjectHelper
 import com.apphance.ameba.PropertyCategory
 import com.apphance.ameba.android.AndroidBuildXmlHelper
@@ -8,6 +9,7 @@ import com.apphance.ameba.android.AndroidManifestHelper
 import com.apphance.ameba.android.AndroidProjectConfiguration
 import com.apphance.ameba.android.AndroidProjectConfigurationRetriever
 import com.apphance.ameba.android.plugins.buildplugin.AndroidPlugin
+import com.apphance.ameba.util.file.FileManager
 import com.sun.org.apache.xpath.internal.XPathAPI
 import groovy.text.SimpleTemplateEngine
 import org.gradle.api.GradleException
@@ -64,7 +66,7 @@ class AndroidTestPlugin implements Plugin<Project> {
 
     public void apply(Project project) {
         this.project = project
-        ProjectHelper.checkAllPluginsAreLoaded(project, this.class, AndroidPlugin.class)
+        PluginHelper.checkAllPluginsAreLoaded(project, this.class, AndroidPlugin.class)
         this.projectHelper = new ProjectHelper()
         this.androidConf = AndroidProjectConfigurationRetriever.getAndroidProjectConfiguration(project)
         this.androidManifestHelper = new AndroidManifestHelper()
@@ -421,7 +423,7 @@ class AndroidTestPlugin implements Plugin<Project> {
         logger.lifecycle("Running tests on ${emulatorName}")
         if (testPerPackage) {
             def allPackages = []
-            projectHelper.findAllPackages("", new File(androidTestDirectory, "src"), allPackages)
+            FileManager.findAllPackages("", new File(androidTestDirectory, "src"), allPackages)
             logger.lifecycle("Running tests on packages ${allPackages}")
             allPackages.each {
                 logger.lifecycle("Running tests for package ${it}")

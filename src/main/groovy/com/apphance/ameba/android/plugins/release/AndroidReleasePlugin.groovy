@@ -1,5 +1,6 @@
 package com.apphance.ameba.android.plugins.release
 
+import com.apphance.ameba.PluginHelper
 import com.apphance.ameba.ProjectConfiguration
 import com.apphance.ameba.ProjectHelper
 import com.apphance.ameba.PropertyCategory
@@ -9,6 +10,7 @@ import com.apphance.ameba.plugins.release.AmebaArtifact
 import com.apphance.ameba.plugins.release.ProjectReleaseCategory
 import com.apphance.ameba.plugins.release.ProjectReleaseConfiguration
 import com.apphance.ameba.plugins.release.ProjectReleasePlugin
+import com.apphance.ameba.util.file.FileManager
 import groovy.text.SimpleTemplateEngine
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,7 +18,7 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
 import static com.apphance.ameba.AmebaCommonBuildTaskGroups.AMEBA_RELEASE
-import static com.apphance.ameba.util.FileDownloader.downloadFile
+import static com.apphance.ameba.util.file.FileDownloader.downloadFile
 
 /**
  * Plugin that provides release functionality for android.
@@ -38,7 +40,7 @@ class AndroidReleasePlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         androidEnvironment = new AndroidEnvironment(project)
-        ProjectHelper.checkAllPluginsAreLoaded(project, this.class, AndroidPlugin.class, ProjectReleasePlugin.class)
+        PluginHelper.checkAllPluginsAreLoaded(project, this.class, AndroidPlugin.class, ProjectReleasePlugin.class)
         use(PropertyCategory) {
             this.project = project
             this.projectHelper = new ProjectHelper();
@@ -135,7 +137,7 @@ class AndroidReleasePlugin implements Plugin<Project> {
                     otaUrl: androidReleaseConf.otaIndexFile?.url,
                     fileIndexUrl: androidReleaseConf.fileIndexFile?.url,
                     releaseNotes: releaseConf.releaseNotes,
-                    fileSize: projectHelper.getHumanReadableSize(fileSize),
+                    fileSize: FileManager.getHumanReadableSize(fileSize),
                     releaseMailFlags: releaseConf.releaseMailFlags,
                     rb: rb
             ]

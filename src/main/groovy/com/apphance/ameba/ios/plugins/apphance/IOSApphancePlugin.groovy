@@ -1,5 +1,6 @@
 package com.apphance.ameba.ios.plugins.apphance
 
+import com.apphance.ameba.PluginHelper
 import com.apphance.ameba.ProjectConfiguration
 import com.apphance.ameba.ProjectHelper
 import com.apphance.ameba.PropertyCategory
@@ -17,7 +18,7 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
-import static com.apphance.ameba.ProjectHelper.MAX_RECURSION_LEVEL
+import static com.apphance.ameba.util.file.FileManager.MAX_RECURSION_LEVEL
 import static com.apphance.ameba.apphance.ApphanceProperty.APPLICATION_KEY
 import static groovy.io.FileType.DIRECTORIES
 import static groovy.io.FileType.FILES
@@ -40,7 +41,7 @@ class IOSApphancePlugin implements Plugin<Project> {
     IOSSingleVariantBuilder iosSingleVariantBuilder
 
     public void apply(Project project) {
-        ProjectHelper.checkAllPluginsAreLoaded(project, this.class, IOSPlugin.class)
+        PluginHelper.checkAllPluginsAreLoaded(project, this.class, IOSPlugin.class)
         use(PropertyCategory) {
             this.projectHelper = new ProjectHelper()
             this.conf = project.getProjectConfiguration()
